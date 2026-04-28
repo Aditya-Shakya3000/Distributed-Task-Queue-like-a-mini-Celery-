@@ -49,4 +49,9 @@ Build Project:
 3. cmake --build .
 
 Run server
+
 ./server
+
+use the python venv for conan
+1. cmd: source ../../conan/bin/activate (conan env created in the home directory)
+2. Run build.sh

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package taskqueue;
+
+// ---- TASK REQUEST ----
+message TaskRequest {
+  string task_name = 1;     // e.g. "send_email"
+  string payload = 2;       // raw data (keep simple for now)
+  int32 max_retries = 3;    // retry limit
+}
+
+// ---- TASK RESPONSE ----
+message TaskResponse {
+  string task_id = 1;
+  TaskStatus status = 2;
+}
+
+// ---- STATUS REQUEST ----
+message TaskStatusRequest {
+  string task_id = 1;
+}
+
+// ---- STATUS RESPONSE ----
+message TaskStatusResponse {
+  string task_id = 1;
+  TaskStatus status = 2;
+  int32 retry_count = 3;
+}
+
+// ---- ENUM FOR TASK STATE ----
+enum TaskStatus {
+  UNKNOWN = 0;
+  PENDING = 1;
+  RUNNING = 2;
+  COMPLETED = 3;
+  FAILED = 4;
+}
+
+// ---- SERVICE DEFINITION ----
+service TaskService {
+  rpc SubmitTask (TaskRequest) returns (TaskResponse);
+  rpc GetTaskStatus (TaskStatusRequest) returns (TaskStatusResponse);
+}
